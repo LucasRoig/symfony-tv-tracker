@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
-
 {% block body %}
     <section>
         <div class="container">
             <div class="search-header">
+                {#{{ dump(results) }}#}
                 <h1>Recherche</h1>
-                5 résultats pour stargate
+                {{ results.total_results }} résultats pour <strong>{{ query }}</strong>
             </div>
             <div class="shows">
+                {% for show in results.results %}
                 <div class="show card horizontal">
                     <div class="card-image">
-                        <a href="{{ path('show_show',{showId:1}) }}">
-                            <img src="https://image.tmdb.org/t/p/w92/dcofw4ByyS0o2CZrYjzhgV2Pgd0.jpg" alt="">
+                        <a href="{{ path('show_show',{showId:show.id}) }}">
+                            <img src="{{ 'https://image.tmdb.org/t/p/w92/' ~ show.poster_path }}" alt="">
                         </a>
                     </div>
                     <div class="card-stacked">
                         <div class="card-content">
                             <h1>
-                                <a href="{{ path('show_show',{showId:1}) }}">Stargate Atlantis (2002)</a>
+                                <a href="{{ path('show_show',{showId:show.id}) }}">{{ show.name }} ({{ show.first_air_date|slice(0,4)}})</a>
                             </h1>
                             <h2>2 épisodes vus sur 76</h2>
                             <h2>Série terminée</h2>
@@ -28,6 +28,7 @@
                             <i class="material-icons">done_all</i>Marquer comme vu</div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </section>
