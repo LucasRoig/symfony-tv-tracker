@@ -1,5 +1,5 @@
 {% extends 'media.html.twig' %}
-{% block background_url%}{{ 'https://image.tmdb.org/t/p/original' ~ show.backdrop_path }}{% endblock %}
+{% block background_url%}{{ show.backdrop_path }}{% endblock %}
 {% block media_poster %}
     <img src="{{ 'https://image.tmdb.org/t/p/w92' ~ show.poster_path}}" alt="">
 {% endblock %}
