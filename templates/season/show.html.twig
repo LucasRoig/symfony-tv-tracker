@@ -6,7 +6,7 @@
 
 {% block media_text %}
     <h2>
-        <a href="tv-show.html">13 Reasons Why</a>
+        <a href="{{ path('show_show',{showId:1}) }}">13 Reasons Why</a>
     </h2>
     <h1>Saison 2
         <span class="date">2017</span>
@@ -15,61 +15,66 @@
 
 {% block media_actions %}
     <div class="action">
-        <a href="tv-season.html">
+        <a href="{{ path('season_show',{showId:1,seasonNumber:1}) }}">
             <i class="material-icons">chevron_left</i>
         </a>
     </div>
     <div class="action">
 
-        <i class="material-icons">done_all</i>Marquer comme vu</div>
+        <i class="material-icons">done_all</i>Marquer comme vu
+    </div>
     <div class="action">
-        <a href="tv-season.html">
+        <a href="{{ path('season_show',{showId:1,seasonNumber:2}) }}">
             <i class="material-icons">chevron_right</i>
         </a>
     </div>
 {% endblock %}
 
 {% block content %}
-<section>
-    <ul class="tabs">
-        <li class="tab col s3">
-            <a class="active" href="#synopsis">Synopsis</a>
-        </li>
-        <li class="tab col s3">
-            <a href="#episodes">Episodes</a>
-        </li>
-    </ul>
-    <div class="container">
-        <div id="synopsis" class="col s12">
-            Clay Jensen, un adolescent qui découvre sous son porche au retour du lycée une mystérieuse boîte portant son nom. À l'intérieur,
-            des cassettes enregistrées par Hannah Baker, une camarade de classe qui s'est tragiquement suicidée deux
-            semaines auparavant. Les enregistrements révèlent que la jeune fille, dont il était amoureux, a décidé de
-            mettre fin à ses jours pour treize raisons. Clay est-il l'une de ces raisons ?
-        </div>
-        <div id="episodes" class="col s12 episodes">
-            <div class="episode">
-                <div>
-                    <h1>
-                        <a href="tv-episode.html">02x01 - Episode 1</a>
-                    </h1>
-                    <h2>12 mai 2017</h2>
-                </div>
-                <button class="btn waves-effect waves-light green">
-                    <i class="material-icons">check</i>
-                </button>
+    <section>
+        <ul class="tabs">
+            <li class="tab col s3">
+                <a class="active" href="#synopsis">Synopsis</a>
+            </li>
+            <li class="tab col s3">
+                <a href="#episodes">Episodes</a>
+            </li>
+        </ul>
+        <div class="container">
+            <div id="synopsis" class="col s12">
+                Clay Jensen, un adolescent qui découvre sous son porche au retour du lycée une mystérieuse boîte portant
+                son nom. À l'intérieur,
+                des cassettes enregistrées par Hannah Baker, une camarade de classe qui s'est tragiquement suicidée deux
+                semaines auparavant. Les enregistrements révèlent que la jeune fille, dont il était amoureux, a décidé
+                de
+                mettre fin à ses jours pour treize raisons. Clay est-il l'une de ces raisons ?
             </div>
-            <div class="episode">
-                <div>
-                    <h1>
-                        <a href="tv-episode.html">02x02 - Episode 2</a>
-                    </h1>
-                    <h2>17 mai 2017</h2>
+            <div id="episodes" class="col s12 episodes">
+                <div class="episode">
+                    <div>
+                        <h1>
+                            <a href="{{ path('episode_show',{showId:1,seasonNumber:1,episodeNumber:1}) }}">02x01 -
+                                Episode 1</a>
+                        </h1>
+                        <h2>12 mai 2017</h2>
+                    </div>
+                    <button class="btn waves-effect waves-light green">
+                        <i class="material-icons">check</i>
+                    </button>
                 </div>
-                <button class="btn waves-effect waves-light red">
-                    <i class="material-icons">clear</i>
-                </button>
+                <div class="episode">
+                    <div>
+                        <h1>
+                            <a href="{{ path('episode_show',{showId:1,seasonNumber:1,episodeNumber:2}) }}">02x02 -
+                                Episode 2</a>
+                        </h1>
+                        <h2>17 mai 2017</h2>
+                    </div>
+                    <button class="btn waves-effect waves-light red">
+                        <i class="material-icons">clear</i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endblock %}
