@@ -1,12 +1,12 @@
 {% extends 'media.html.twig' %}
-
+{% block background_url%}{{ 'https://image.tmdb.org/t/p/original' ~ show.backdrop_path }}{% endblock %}
 {% block media_poster %}
-    <img src="https://image.tmdb.org/t/p/w92/8qc2cOqGiha24c43Qda5r85xGvd.jpg" alt="">
+    <img src="{{ 'https://image.tmdb.org/t/p/w92' ~ show.poster_path}}" alt="">
 {% endblock %}
 
 {% block media_text %}
-    <h1>13 Reasons Why
-        <span class="date">2017</span>
+    <h1>{{ show.name }}
+        <span class="date">{{ show.first_air_date|slice(0,4) }}</span>
     </h1>
 {% endblock %}
 
@@ -23,7 +23,7 @@
 {% endblock %}
 
 {% block content %}
-
+    {{ dump(show) }}
     <section>
         <ul class="tabs">
             <li class="tab col s3">
@@ -38,27 +38,22 @@
         </ul>
         <div class="container">
             <div id="synopsis" class="col s12">
-                Clay Jensen, un adolescent qui découvre sous son porche au retour du lycée une mystérieuse boîte portant
-                son nom. À l'intérieur,
-                des cassettes enregistrées par Hannah Baker, une camarade de classe qui s'est tragiquement suicidée deux
-                semaines auparavant. Les enregistrements révèlent que la jeune fille, dont il était amoureux, a décidé
-                de
-                mettre fin à ses jours pour treize raisons. Clay est-il l'une de ces raisons ?
+                {{ show.overview }}
             </div>
             <div id="seasons" class="col s12">
-
+                {% for season in show.seasons %}
                 <div class="season card horizontal">
                     <div class="card-image">
-                        <img src="https://image.tmdb.org/t/p/w94_and_h141_bestv2/90FhPvnGLz6itq3KdtRraro9umE.jpg"
+                        <img src="{{ 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' ~ season.poster_path}}"
                              alt="">
                     </div>
                     <div class="card-stacked">
                         <div class="card-content">
                             <h1>
-                                <a href="{{ path('season_show',{showId: 1, seasonNumber: 1}) }}">Saison 1</a>
+                                <a href="{{ path('season_show',{showId: show.id, seasonNumber: season.season_number}) }}">Saison {{ season.season_number }}</a>
                             </h1>
                             <h2>
-                                2017 | 13 épisodes
+                                {{ season.air_date | slice(0,4) }} | {{ season.episode_count }} épisodes
                             </h2>
                             <h2>
                                 0 épisodes à voir
@@ -69,29 +64,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="season card horizontal">
-                    <div class="card-image">
-                        <img src="https://image.tmdb.org/t/p/w94_and_h141_bestv2/90FhPvnGLz6itq3KdtRraro9umE.jpg"
-                             alt="">
-                    </div>
-                    <div class="card-stacked">
-                        <div class="card-content">
-                            <h1>
-                                <a href="{{ path('season_show',{showId: 1, seasonNumber: 2}) }}">Saison 2</a>
-                            </h1>
-                            <h2>
-                                2018 | 13 épisodes
-                            </h2>
-                            <h2>
-                                8 épisodes à voir
-                            </h2>
-                        </div>
-                        <div class="card-action button">
-                            <i class="material-icons">done_all</i>Marquer comme vu
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
 
             </div>
 
