@@ -1,22 +1,22 @@
 {% extends 'media.html.twig' %}
-
+{% block background_url %}{{ episode.still_path }}{% endblock %}
 {% block media_poster %}
-    <img src="https://image.tmdb.org/t/p/w92/8qc2cOqGiha24c43Qda5r85xGvd.jpg" alt="">
+    <img src="https://image.tmdb.org/t/p/w92{{ season.poster_path }}" alt="">
 {% endblock %}
 
 {% block media_text %}
     <h2>
-        <a href="{{ path('show_show',{showId:1}) }}">13 Reasons Why</a> :
-        <a href="{{ path('season_show',{showId:1,seasonNumber:1}) }}"> Saison 2 </a>
+        <a href="{{ path('show_show',{showId:show.id}) }}">{{ show.name }}</a> :
+        <a href="{{ path('season_show',{showId:show.id,seasonNumber:episode.season_number}) }}"> Saison {{ episode.season_number }} </a>
     </h2>
-    <h1>02x01
-        <span class="episode-title">Premier polaroid</span>
+    <h1>{{ episode.season_number }}x{{ episode.episode_number }}
+        <span class="episode-title">{{ episode.name }}</span>
     </h1>
 {% endblock %}
 
 {% block media_actions %}
     <div class="action">
-        <a href="{{ path('episode_show',{showId:1,seasonNumber:1,episodeNumber:1}) }}">
+        <a href="#">
             <i class="material-icons">chevron_left</i>
         </a>
     </div>
@@ -24,24 +24,21 @@
         <i class="material-icons">done_all</i>Marquer comme vu
     </div>
     <div class="action">
-        <a href="{{ path('episode_show',{showId:1,seasonNumber:1,episodeNumber:1}) }}">
+        <a href="#">
             <i class="material-icons">chevron_right</i>
         </a>
     </div>
 {% endblock %}
 
 {% block content %}
+    {#{{ dump(episode) }}#}
     <section>
         <div class="container">
             <div class="meta">
-                <label>DIFFUSION </label>12 mai 2018
+                <label>DIFFUSION </label>{{ episode.air_date }}
             </div>
             <div id="synopsis" class="col s12">
-                Clay Jensen, un adolescent qui découvre sous son porche au retour du lycée une mystérieuse boîte portant
-                son nom. À l'intérieur,des cassettes enregistrées par Hannah Baker, une camarade de classe qui s'est
-                tragiquement suicidée deux semaines auparavant. Les enregistrements révèlent que la jeune fille, dont il
-                était amoureux, a décidé de mettre fin à ses jours pour treize raisons. Clay est-il l'une de ces raisons
-                ?
+                {{ episode.overview }}
             </div>
         </div>
     </section>
