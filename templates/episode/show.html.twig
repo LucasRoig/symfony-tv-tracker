@@ -1,0 +1,48 @@
+{% extends 'media.html.twig' %}
+
+{% block media_poster %}
+    <img src="https://image.tmdb.org/t/p/w92/8qc2cOqGiha24c43Qda5r85xGvd.jpg" alt="">
+{% endblock %}
+
+{% block media_text %}
+    <h2>
+        <a href="tv-show.html">13 Reasons Why</a> :
+        <a href="tv-season.html"> Saison 2 </a>
+    </h2>
+    <h1>02x01
+        <span class="episode-title">Premier polaroid</span>
+    </h1>
+{% endblock %}
+
+{% block media_actions %}
+    <div class="action">
+        <a href="tv-episode.html">
+            <i class="material-icons">chevron_left</i>
+        </a>
+    </div>
+    <div class="action">
+        <i class="material-icons">done_all</i>Marquer comme vu
+    </div>
+    <div class="action">
+        <a href="tv-episode.html">
+            <i class="material-icons">chevron_right</i>
+        </a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="meta">
+                <label>DIFFUSION </label>12 mai 2018
+            </div>
+            <div id="synopsis" class="col s12">
+                Clay Jensen, un adolescent qui découvre sous son porche au retour du lycée une mystérieuse boîte portant
+                son nom. À l'intérieur,des cassettes enregistrées par Hannah Baker, une camarade de classe qui s'est
+                tragiquement suicidée deux semaines auparavant. Les enregistrements révèlent que la jeune fille, dont il
+                était amoureux, a décidé de mettre fin à ses jours pour treize raisons. Clay est-il l'une de ces raisons
+                ?
+            </div>
+        </div>
+    </section>
+{% endblock %}
