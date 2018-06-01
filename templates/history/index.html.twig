@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <section>
+        <div class="container">
+            <div class="search-header">
+                <h1>Historique</h1>
+            </div>
+        </div>
+        <ul id="tabs-swipe-demo" class="tabs">
+            <li class="tab col s3">
+                <a href="#not_completed">Non terminées</a>
+            </li>
+            <li class="tab col s3">
+                <a href="#completed">Terminées</a>
+            </li>
+        </ul>
+        <div class="container">
+
+            <div id="not_completed" class="shows">
+                <div class="show card horizontal">
+                    <div class="card-image">
+                        <a href="{{ path('show_show',{showId:1}) }}">
+                            <img src="https://image.tmdb.org/t/p/w92/dcofw4ByyS0o2CZrYjzhgV2Pgd0.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <h1>
+                                <a href="{{ path('show_show',{showId:1}) }}">Stargate Atlantis (2002)</a>
+                            </h1>
+                            <h2>15 épisodes restants</h2>
+                        </div>
+                        <div class="card-action button">
+                            <i class="material-icons">done_all</i>Marquer comme vu
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="completed" class="shows">
+                <div class="show card horizontal">
+                    <div class="card-image">
+                        <a href="{{ path('show_show',{showId:1}) }}">
+                            <img src="https://image.tmdb.org/t/p/w92/dcofw4ByyS0o2CZrYjzhgV2Pgd0.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <h1>
+                                <a href="{{ path('show_show',{showId:1}) }}">Stargate Atlantis (2002)</a>
+                            </h1>
+                            <h2>Série terminée</h2>
+                        </div>
+                        <div class="card-action button danger">
+                            <i class="material-icons">clear</i>Marquer comme non vu
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
