@@ -46,6 +46,11 @@ class Show
      */
     private $overview;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $tmdb_id;
+
     public function getId()
     {
         return $this->id;
@@ -119,6 +124,18 @@ class Show
     public function setOverview(?string $overview): self
     {
         $this->overview = $overview;
+
+        return $this;
+    }
+
+    public function getTmdbId(): ?int
+    {
+        return $this->tmdb_id;
+    }
+
+    public function setTmdbId(int $tmdb_id): self
+    {
+        $this->tmdb_id = $tmdb_id;
 
         return $this;
     }
