@@ -1,0 +1,204 @@
+a{
+    color: inherit
+}
+
+.media-header{
+    color : white;
+    background: black;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url('https://image.tmdb.org/t/p/original/eAT1V3CSBCSNHkXjKnuNNrMpUCd.jpg');
+    background-size: cover;
+    position: relative;
+}
+
+.media-header .content{
+    padding-left: 1em ;
+    display: flex;
+    padding-top: 66px;
+    margin-bottom: 0.5em;
+}
+.media-header .content .text-content{
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    justify-content: flex-end;
+}
+.media-header .content .text-content h1{
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 0;
+    margin-top: 0.2em;
+}
+.media-header .content .text-content h2{
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 0;
+    margin-top: 0.2em; 
+}
+
+.media-header .content .text-content span.date{
+    font-size: 1em;
+    font-weight: 400;
+    opacity: 0.6;
+}
+
+.media-header .content .text-content span.episode-title{
+    font-size: 0.7em;
+    font-weight: 400;
+}
+
+.media-header .action-bar{
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid #333;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em; 
+    background-image: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) );
+}
+
+.action-bar .action{
+    display: flex;
+}
+
+.action-bar .action i {
+    margin-right: 5px;
+}
+
+nav{
+    position: fixed;
+    z-index: 997;
+    background: rgba(8, 28, 36, 0.8)
+}
+
+.season{
+    display: flex;
+}
+.season .card-content{
+    padding: 8px;
+    padding-left: 12px; 
+}
+.card-action.button{
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    font-weight: 700;
+    background: #e0e1e2 none;
+    cursor: pointer;
+    color: rgba(0,0,0,.6);
+}
+
+.card-action.button.danger{
+    background: #db2828 none;
+    color: #fff;
+}
+
+.card-action.button.danger:hover{
+    background: #d01919 none;
+    color: #fff;
+}
+
+.card-action.button.danger:focus{
+    background: #ca1010 none;
+    color: #fff;
+}
+
+.card-action.button.danger:active{
+    background: #b21e1e none;
+    color: #fff;
+}
+
+.card-action.button i{
+    margin-right: 10px;
+}
+
+.card-action.button:hover{
+    color: rgba(0,0,0,.8);
+    background-color: #cacbcd;
+}
+
+.card-action.button:focus{
+    color: rgba(0,0,0,.8);
+    background-color: #cacbcd;
+}
+
+.card-action.button:active{
+    color: rgba(0,0,0,.9);
+    background-color: #babbbc;
+}
+
+.season h1{
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    font-weight: 800;
+    font-size: 1.5em;
+}
+
+.season h2{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+.planning .episode{
+    padding: 1em; 
+    border-bottom: 1px solid #e0e0e0 
+}
+
+.episodes .episode{
+    padding: 1em; 
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.episode h1{
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    font-weight: 800;
+    font-size: 1.5em;
+}
+
+.episode h2{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: 600;
+    font-size: 1.2em;
+}
+
+.show h1{
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.show h2{
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+.show .card-content{
+    padding: 6px;
+    padding-left: 12px; 
+}
+
+.search-header h1{
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    font-size: 2em;
+}
+
+.search-bar input{
+    color: #fff
+}
+
+.sidenav{
+    background-color: #14272F;
+    color: #fff;
+}
+
+.sidenav li>a{
+    color: #fff;
+}
