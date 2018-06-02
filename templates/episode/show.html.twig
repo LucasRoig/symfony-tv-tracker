@@ -38,7 +38,7 @@
                 <label>DIFFUSION </label>{{ episode.airDate | date('d-m-Y') }}
             </div>
             <div id="synopsis" class="col s12">
-                {{ episode.overview }}
+                {{ episode.overview ? episode.overview : "Le synopsis n'est pas disponible"}}
             </div>
         </div>
     </section>

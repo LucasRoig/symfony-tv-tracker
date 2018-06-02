@@ -38,7 +38,7 @@
         </ul>
         <div class="container">
             <div id="synopsis" class="col s12">
-                {{ show.overview }}
+                {{ show.overview ? show.overview : "Le synopsis n'est pas disponible."}}
             </div>
             <div id="seasons" class="col s12">
                 {% for season in show.seasons %}
@@ -64,6 +64,8 @@
                         </div>
                     </div>
                 </div>
+                {% else %}
+                    Aucune saison pour l'instant
                 {% endfor %}
 
             </div>
@@ -77,6 +79,8 @@
                     </h1>
                     <h2>{{ episode.airDate | date_diff}}</h2>
                 </div>
+                {% else %}
+                    Aucun épisode n'est annoncé.
                 {% endfor %}
             </div>
         </div>

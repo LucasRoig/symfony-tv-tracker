@@ -42,7 +42,7 @@
             </ul>
             <div class="container">
                 <div id="synopsis" class="col s12">
-                    {{ season.overview }}
+                    {{ season.overview ? season.overview : "Le synopsis n'est pas disponible"}}
                 </div>
                 <div id="episodes" class="col s12 episodes">
                     {% for episode in season.episodes %}
@@ -58,6 +58,8 @@
                                 <i class="material-icons">check</i>
                             </button>
                         </div>
+                    {% else %}
+                        Aucun épisode pour l'instant.
                     {% endfor %}
                 </div>
             </div>
