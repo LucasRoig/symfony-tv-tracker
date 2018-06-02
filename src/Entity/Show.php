@@ -112,8 +112,9 @@ class Show
 
     public function setFirstAirDate(\DateTimeInterface $first_air_date): self
     {
-        $this->first_air_date = $first_air_date;
-
+        if($this->getFirstAirDate() == null || $this->getFirstAirDate()->getTimestamp() != $first_air_date->getTimestamp()) {
+            $this->first_air_date = $first_air_date;
+        }
         return $this;
     }
 

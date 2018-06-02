@@ -81,8 +81,9 @@ class Season
 
     public function setAirDate(\DateTimeInterface $air_date): self
     {
-        $this->air_date = $air_date;
-
+        if($this->getAirDate() == null || $this->getAirDate()->getTimestamp() != $air_date->getTimestamp()) {
+            $this->air_date = $air_date;
+        }
         return $this;
     }
 
