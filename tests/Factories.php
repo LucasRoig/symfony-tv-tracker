@@ -12,7 +12,20 @@ class Factories {
             'poster_path' => 'bliblu',
             'status' => 'returning',
             'id' => 1,
-            'overview' => 'blilbu'
+            'overview' => 'blilbu',
+            'seasons' => [
+                ['season_number' => 1],
+            ]
+        ];
+    }
+
+    public static function getTmdbSeason(){
+        return [
+            'air_date' => '2017-4-4',
+            'name' => 'season 1',
+            'overview' => 'Une nouvelle saison',
+            'poster_path' => 'sdfgsdfgsfdfg',
+            'season_number' => 1
         ];
     }
 }

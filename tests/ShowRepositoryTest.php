@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Show;
+use App\Repository\SeasonRepository;
 use App\Repository\ShowRepository;
 use App\Repository\TmdbRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -13,6 +14,10 @@ class ShowRepositoryTest extends KernelTestCase
      * @var \App\Repository\ShowRepository
      */
     protected $showRepository;
+    /**
+     * @var \App\Repository\SeasonRepository
+     */
+    protected $seasonRepository;
 
     protected function setUp(){
         $kernel = self::bootKernel();
@@ -20,7 +25,10 @@ class ShowRepositoryTest extends KernelTestCase
         $registry = $kernel->getContainer()->get('doctrine');
         $tmdbRepositoryMock = $this->createMock(TmdbRepository::class);
         $tmdbRepositoryMock->method('getShow')->willReturn(Factories::getTmdbShow());
-        $this->showRepository = new ShowRepository($registry,$tmdbRepositoryMock);
+        $tmdbRepositoryMock->method('getSeason')->willReturn(Factories::getTmdbSeason());
+        $this->seasonRepository = new SeasonRepository($registry);
+        $this->showRepository = new ShowRepository($registry,$tmdbRepositoryMock,$this->seasonRepository);
+
     }
 
     /** @test */
@@ -37,5 +45,20 @@ class ShowRepositoryTest extends KernelTestCase
         $this->showRepository->findOneByTmdbId(1);
         $this->showRepository->findOneByTmdbId(1);
         $this->assertEquals(1, $this->showRepository->count([]));
+    }
+    
+    /** @test */
+    function fetching_a_show_also_fetches_its_seasons(){
+        $this->assertEquals(0,$this->seasonRepository->count([]));
+        $show = $this->showRepository->findOneByTmdbId(1);
+        $this->assertEquals(1,$this->seasonRepository->count([]));
+    }
+
+    /** @test */
+    function fetching_a_show_which_seasons_are_already_in_db_does_not_create_new_seasons(){
+        $this->assertEquals(0,$this->seasonRepository->count([]));
+        $this->showRepository->findOneByTmdbId(1);
+        $show = $this->showRepository->findOneByTmdbId(1);
+        $this->assertEquals(1,$this->seasonRepository->count([]));
     }
 }
