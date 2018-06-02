@@ -201,4 +201,12 @@ class Season
 
         return $this;
     }
+
+    function hasPreviousSeason(){
+        return $this->getSeasonNumber() > 1;
+    }
+
+    function hasNextSeason(){
+        return $this->getShow()->getSeasonsCount() > $this->season_number;
+    }
 }

@@ -14,17 +14,16 @@
     {% endblock %}
 
     {% block media_actions %}
-        <div class="action">
-            <a href="#">
+        <div class="action {{ season.hasPreviousSeason() ? '' : 'hidden' }}">
+            <a href="{{ season.hasPreviousSeason() ? path('season_show',{showId:season.show.tmdbId,seasonNumber:season.seasonNumber - 1}) : '#' }}">
                 <i class="material-icons">chevron_left</i>
             </a>
         </div>
         <div class="action">
-
             <i class="material-icons">done_all</i>Marquer comme vu
         </div>
-        <div class="action">
-            <a href="#">
+        <div class="action {{ season.hasNextSeason() ? '' : 'hidden' }}">
+            <a href="{{ season.hasNextSeason() ? path('season_show',{showId:season.show.tmdbId,seasonNumber:season.seasonNumber + 1}) : '#' }}">
                 <i class="material-icons">chevron_right</i>
             </a>
         </div>

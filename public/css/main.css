@@ -2,6 +2,9 @@ a{
     color: inherit
 }
 
+.hidden{
+    visibility: hidden;
+}
 .media-header{
     color : white;
     background: black;

@@ -221,4 +221,8 @@ class Show
 
         return $this;
     }
+
+    public function getSeasonsCount(){
+        return $this->getSeasons()->count();
+    }
 }
