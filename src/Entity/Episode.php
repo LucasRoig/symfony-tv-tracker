@@ -159,4 +159,52 @@ class Episode
 
         return $this;
     }
+
+    public function hasPreviousEpisode(){
+        if ($this->getEpisodeNumber() > 1){
+            return true;
+        }
+        return $this->getSeasonNumber() > 1 &&
+            $this->getTvShow()->getSeasonByNumber($this->getSeasonNumber() - 1)->getEpisodeCount() > 0;
+    }
+
+    public function getPreviousEpisodeInfo(){
+        if (!$this->hasPreviousEpisode()){
+            return null;
+        }
+        if($this->getEpisodeNumber() > 1){
+            return [
+                'seasonNumber' => $this->getSeasonNumber(),
+                'episodeNumber' => $this->getEpisodeNumber() - 1,
+            ];
+        }
+        return [
+            'seasonNumber' => $this->getSeasonNumber() - 1,
+            'episodeNumber' => $this->getTvShow()->getSeasonByNumber($this->getSeasonNumber() - 1)->getEpisodeCount()
+        ];
+    }
+
+    public function hasNextEpisode(){
+        if($this->getEpisodeNumber() < $this->getSeason()->getEpisodeCount()){
+            return true;
+        }
+        return $this->getSeason()->hasNextSeason() &&
+            $this->getTvShow()->getSeasonByNumber($this->getSeasonNumber() + 1)->getEpisodeCount() > 0;
+    }
+
+    public function getNextEpisodeInfo(){
+        if(!$this->hasNextEpisode()){
+            return null;
+        }
+        if($this->getEpisodeNumber() < $this->getSeason()->getEpisodeCount()){
+            return [
+                'seasonNumber' => $this->getSeasonNumber(),
+                'episodeNumber' => $this->getEpisodeNumber() + 1
+            ];
+        }
+        return [
+            'seasonNumber' => $this->getSeasonNumber() +1,
+            'episodeNumber' => 1
+        ];
+    }
 }

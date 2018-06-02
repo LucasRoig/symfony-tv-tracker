@@ -225,4 +225,11 @@ class Show
     public function getSeasonsCount(){
         return $this->getSeasons()->count();
     }
+
+    public function getSeasonByNumber($seasonNumber){
+        foreach ($this->getSeasons() as $season){
+            if ($season->getSeasonNumber() == $seasonNumber) return $season;
+        }
+        return null;
+    }
 }
