@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\MediaRepository;
 use App\Repository\ShowRepository;
 use App\Repository\TmdbRepository;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,9 +13,9 @@ class ShowController extends Controller
     /**
      * @Route("/show/{showId}", name="show_show")
      */
-    public function show($showId, TmdbRepository $tmdbRepository, ShowRepository $showRepository)
+    public function show($showId, TmdbRepository $tmdbRepository, MediaRepository $mediaRepository)
     {
-        $show = $showRepository->findOneByTmdbId($showId);
+        $show = $mediaRepository->getShowByTmdbId($showId);
         return $this->render('show/show.html.twig', [
             'show'=>$show,
         ]);
