@@ -27,7 +27,27 @@ class Factories {
             'overview' => 'Une nouvelle saison',
             'poster_path' => 'sdfgsdfgsfdfg',
             'season_number' => 1,
-            'episodes' => [],
+            'episodes' => [
+                ['episode_number' => 1]
+            ],
         ];
+    }
+
+    public static function getTmdbEpisode(){
+        return [
+            'seasonNumber' => 1,
+            'air_date' => '2016-4-4',
+            'name' => 'Episode 1',
+            'overview' => 'Un nouvel episode',
+            'still_path' => 'fddffsfsdfsdfsdffds',
+            'episode_number' => 1
+        ];
+    }
+
+    public static function configureShowUpdaterMock($mock){
+        $mock->method('getShow')->willReturn(Factories::getTmdbShow());
+        $mock->method('getSeason')->willReturn(Factories::getTmdbSeason());
+        $mock->method('getEpisode')->willReturn(Factories::getTmdbEpisode());
+        return $mock;
     }
 }

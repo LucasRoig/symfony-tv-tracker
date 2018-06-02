@@ -59,9 +59,15 @@ class Show
      */
     private $seasons;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Episode", mappedBy="tv_show", orphanRemoval=true)
+     */
+    private $episodes;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
+        $this->episodes = new ArrayCollection();
     }
 
     public function getId()
@@ -179,6 +185,37 @@ class Show
             // set the owning side to null (unless already changed)
             if ($season->getShow() === $this) {
                 $season->setShow(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Episode[]
+     */
+    public function getEpisodes(): Collection
+    {
+        return $this->episodes;
+    }
+
+    public function addEpisode(Episode $episode): self
+    {
+        if (!$this->episodes->contains($episode)) {
+            $this->episodes[] = $episode;
+            $episode->setTvShow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEpisode(Episode $episode): self
+    {
+        if ($this->episodes->contains($episode)) {
+            $this->episodes->removeElement($episode);
+            // set the owning side to null (unless already changed)
+            if ($episode->getTvShow() === $this) {
+                $episode->setTvShow(null);
             }
         }
 

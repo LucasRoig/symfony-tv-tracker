@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 
+use App\Repository\EpisodeRepository;
 use App\Repository\MediaRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\ShowRepository;
@@ -22,6 +23,11 @@ class MediaRepositoryTest extends KernelTestCase {
      */
     protected $seasonRepository;
     /**
+     * @var EpisodeRepository
+     */
+    protected $episodeRepository;
+
+    /**
      * @var \App\Repository\ShowUpdater
      */
     protected $showUpdater;
@@ -39,9 +45,9 @@ class MediaRepositoryTest extends KernelTestCase {
 //        $registry->getConnection()->getConfiguration()->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
 
         $tmdbRepositoryMock = $this->createMock(TmdbRepository::class);
-        $tmdbRepositoryMock->method('getShow')->willReturn(Factories::getTmdbShow());
-        $tmdbRepositoryMock->method('getSeason')->willReturn(Factories::getTmdbSeason());
+        $tmdbRepositoryMock = Factories::configureShowUpdaterMock($tmdbRepositoryMock);
 
+        $this->episodeRepository = new EpisodeRepository($registry);
         $this->seasonRepository = new SeasonRepository($registry);
         $this->showRepository = new ShowRepository($registry);
         $this->showUpdater = new ShowUpdater($tmdbRepositoryMock, $entityManager);
@@ -60,5 +66,13 @@ class MediaRepositoryTest extends KernelTestCase {
         $this->mediaRepository->getSeasonByTmdbId(1,1);
         $this->assertEquals(1,$this->showRepository->count([]));
         $this->assertEquals(1,$this->seasonRepository->count([]));
+    }
+
+    /** @test */
+    function getting_an_episode_create_the_show_and_the_season(){
+        $this->mediaRepository->getEpisodeByTmdbId(1,1,1);
+        $this->assertEquals(1,$this->showRepository->count([]));
+        $this->assertEquals(1,$this->seasonRepository->count([]));
+        $this->assertEquals(1,$this->episodeRepository->count([]));
     }
 }

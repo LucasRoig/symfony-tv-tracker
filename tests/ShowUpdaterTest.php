@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Entity\Season;
 use App\Entity\Show;
+use App\Repository\EpisodeRepository;
 use App\Repository\SeasonRepository;
 use App\Repository\ShowRepository;
 use App\Repository\ShowUpdater;
@@ -24,6 +25,11 @@ class ShowUpdaterTest extends KernelTestCase
      * @var \App\Repository\ShowUpdater
      */
     protected $showUpdater;
+    /**
+     * @var EpisodeRepository
+     */
+    protected $episodeRepository;
+
     protected function setUp(){
         $kernel = self::bootKernel();
         DatabasePrimer::prime(self::$kernel);
@@ -32,9 +38,9 @@ class ShowUpdaterTest extends KernelTestCase
 //        $registry->getConnection()->getConfiguration()->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
 
         $tmdbRepositoryMock = $this->createMock(TmdbRepository::class);
-        $tmdbRepositoryMock->method('getShow')->willReturn(Factories::getTmdbShow());
-        $tmdbRepositoryMock->method('getSeason')->willReturn(Factories::getTmdbSeason());
+        $tmdbRepositoryMock = Factories::configureShowUpdaterMock($tmdbRepositoryMock);
 
+        $this->episodeRepository = new EpisodeRepository($registry);
         $this->seasonRepository = new SeasonRepository($registry);
         $this->showRepository = new ShowRepository($registry);
         $this->showUpdater = new ShowUpdater($tmdbRepositoryMock, $entityManager);
@@ -75,5 +81,20 @@ class ShowUpdaterTest extends KernelTestCase
     function fetching_a_show_does_not_fetch_season_0(){
         $this->showUpdater->updateShow(1);
         $this->assertEquals(1,$this->seasonRepository->count([]));
+    }
+
+    /** @test */
+    function fetching_a_show_also_fetches_its_episodes(){
+        $show = $this->showUpdater->updateShow(1);
+        $this->assertEquals(1,$this->episodeRepository->count([]));
+        $this->assertNotNull($show->getEpisodes()->get(0));
+        $this->assertNotNull($show->getSeasons()->get(0)->getEpisodes()->get(0));
+    }
+
+    /** @test */
+    function fetching_a_show_that_is_already_in_db_does_not_create_new_episodes(){
+        $show = $this->showUpdater->updateShow(1);
+        $show = $this->showUpdater->updateShow(1);
+        $this->assertEquals(1,$this->episodeRepository->count([]));
     }
 }

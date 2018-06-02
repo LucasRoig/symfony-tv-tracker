@@ -46,20 +46,20 @@
                     {{ season.overview }}
                 </div>
                 <div id="episodes" class="col s12 episodes">
-                    {#{% for episode in season.episodes %}#}
-                        {#<div class="episode">#}
-                            {#<div>#}
-                                {#<h1>#}
-                                    {#<a href="{{ path('episode_show',{showId:show.id,seasonNumber:season.season_number,episodeNumber:episode.episode_number}) }}">{{ season.season_number }}x{{ episode.episode_number }} -#}
-                                        {#{{ episode.name }}</a>#}
-                                {#</h1>#}
-                                {#<h2>{{ episode.air_date }}</h2>#}
-                            {#</div>#}
-                            {#<button class="btn waves-effect waves-light green">#}
-                                {#<i class="material-icons">check</i>#}
-                            {#</button>#}
-                        {#</div>#}
-                    {#{% endfor %}#}
+                    {% for episode in season.episodes %}
+                        <div class="episode">
+                            <div>
+                                <h1>
+                                    <a href="{{ path('episode_show',{showId:season.show.tmdbId,seasonNumber:season.seasonNumber,episodeNumber:episode.episodeNumber}) }}">{{ season.seasonNumber }}x{{ episode.episodeNumber }} -
+                                        {{ episode.name }}</a>
+                                </h1>
+                                <h2>{{ episode.airDate | date('d-m-Y') }}</h2>
+                            </div>
+                            <button class="btn waves-effect waves-light green">
+                                <i class="material-icons">check</i>
+                            </button>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </section>

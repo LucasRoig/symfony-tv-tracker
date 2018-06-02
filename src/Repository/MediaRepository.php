@@ -37,6 +37,14 @@ class MediaRepository {
         return null;
     }
 
+    public function getEpisodeByTmdbId($tmdbShowId, $seasonNumber, $episodeNumber){
+        $season = $this->getSeasonByTmdbId($tmdbShowId,$seasonNumber);
+        foreach ($season->getEpisodes() as $episode){
+            if($episode->getEpisodeNumber() == $episodeNumber) return $episode;
+        }
+        return null;
+    }
+
     private function needsUpdate($media){
         return true;
     }

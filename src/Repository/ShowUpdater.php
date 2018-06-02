@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 
+use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Show;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,6 +47,8 @@ class ShowUpdater {
         }
         $this->entityManager->flush();
         $this->entityManager->refresh($show);
+        $this->entityManager->clear();
+
         return $show;
     }
 
@@ -72,6 +75,35 @@ class ShowUpdater {
             ->setTmdbShowId($show->getTmdbId())
             ->setEpisodeCount(count($tmdbSeason['episodes']))
             ->setShow($show);
+        foreach ($tmdbSeason['episodes'] as $episode){
+            $this->updateEpisode($show,$season,$episode['episode_number']);
+        }
         $this->entityManager->persist($season);
+    }
+
+    /**
+     * @param $show Show
+     * @param $season Season
+     * @param $episodeNumber
+     */
+    private function updateEpisode($show, $season, $episodeNumber){
+        $episode = null;
+        foreach ($season->getEpisodes() as $e){
+            if($e->getEpisodeNumber() == $episodeNumber){
+                $episode = $e;
+                break;
+            }
+        }
+        $tmdbEpisode = $this->tmdbRepository->getEpisode($show->getTmdbId(),$season->getSeasonNumber(),$episodeNumber);
+        $episode = isset($episode) ? $episode : new Episode();
+        $episode->setSeasonNumber($season->getSeasonNumber())
+            ->setSeason($season)
+            ->setAirDate(new \DateTime($tmdbEpisode['air_date']))
+            ->setName($tmdbEpisode['name'])
+            ->setOverview($tmdbEpisode['overview'])
+            ->setStillPath($tmdbEpisode['still_path'])
+            ->setEpisodeNumber($episodeNumber)
+            ->setTvShow($show);
+        $this->entityManager->persist($episode);
     }
 }

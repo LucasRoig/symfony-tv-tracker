@@ -1,15 +1,15 @@
 {% extends 'media.html.twig' %}
-{% block background_url %}{{ episode.still_path }}{% endblock %}
+{% block background_url %}{{ episode.stillPath }}{% endblock %}
 {% block media_poster %}
-    <img src="https://image.tmdb.org/t/p/w92{{ season.poster_path }}" alt="">
+    <img src="https://image.tmdb.org/t/p/w92{{ season.posterPath }}" alt="">
 {% endblock %}
 
 {% block media_text %}
     <h2>
-        <a href="{{ path('show_show',{showId:show.id}) }}">{{ show.name }}</a> :
-        <a href="{{ path('season_show',{showId:show.id,seasonNumber:episode.season_number}) }}"> Saison {{ episode.season_number }} </a>
+        <a href="{{ path('show_show',{showId:show.tmdbId}) }}">{{ show.name }}</a> :
+        <a href="{{ path('season_show',{showId:show.tmdbId,seasonNumber:episode.seasonNumber}) }}"> Saison {{ episode.seasonNumber }} </a>
     </h2>
-    <h1>{{ episode.season_number }}x{{ episode.episode_number }}
+    <h1>{{ episode.seasonNumber }}x{{ episode.episodeNumber }}
         <span class="episode-title">{{ episode.name }}</span>
     </h1>
 {% endblock %}
@@ -35,7 +35,7 @@
     <section>
         <div class="container">
             <div class="meta">
-                <label>DIFFUSION </label>{{ episode.air_date }}
+                <label>DIFFUSION </label>{{ episode.airDate | date('d-m-Y') }}
             </div>
             <div id="synopsis" class="col s12">
                 {{ episode.overview }}
