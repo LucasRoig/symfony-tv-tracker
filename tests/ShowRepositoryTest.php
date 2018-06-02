@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\Season;
 use App\Entity\Show;
 use App\Repository\SeasonRepository;
 use App\Repository\ShowRepository;
@@ -23,6 +24,7 @@ class ShowRepositoryTest extends KernelTestCase
         $kernel = self::bootKernel();
         DatabasePrimer::prime(self::$kernel);
         $registry = $kernel->getContainer()->get('doctrine');
+//        $registry->getConnection()->getConfiguration()->setSQLLogger(new \Doctrine\DBAL\Logging\EchoSQLLogger());
         $tmdbRepositoryMock = $this->createMock(TmdbRepository::class);
         $tmdbRepositoryMock->method('getShow')->willReturn(Factories::getTmdbShow());
         $tmdbRepositoryMock->method('getSeason')->willReturn(Factories::getTmdbSeason());
@@ -60,5 +62,18 @@ class ShowRepositoryTest extends KernelTestCase
         $this->showRepository->findOneByTmdbId(1);
         $show = $this->showRepository->findOneByTmdbId(1);
         $this->assertEquals(1,$this->seasonRepository->count([]));
+    }
+
+    /** @test */
+    function fetching_a_show_does_not_fetch_season_0(){
+        $this->showRepository->findOneByTmdbId(1);
+        $this->assertEquals(1,$this->seasonRepository->count([]));
+    }
+
+    /** @test */
+    function a_show_has_seasons(){
+        $show = $this->showRepository->findOneByTmdbId(1);
+        $season = $show->getSeasons()->get(0);
+        $this->assertEquals(Season::class, get_class($season));
     }
 }

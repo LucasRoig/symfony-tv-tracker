@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +53,16 @@ class Show
      * @ORM\Column(type="integer")
      */
     private $tmdb_id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Season", mappedBy="show_id", orphanRemoval=true)
+     */
+    private $seasons;
+
+    public function __construct()
+    {
+        $this->seasons = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -137,6 +149,37 @@ class Show
     public function setTmdbId(int $tmdb_id): self
     {
         $this->tmdb_id = $tmdb_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Season[]
+     */
+    public function getSeasons(): Collection
+    {
+        return $this->seasons;
+    }
+
+    public function addSeason(Season $season): self
+    {
+        if (!$this->seasons->contains($season)) {
+            $this->seasons[] = $season;
+            $season->setShow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeason(Season $season): self
+    {
+        if ($this->seasons->contains($season)) {
+            $this->seasons->removeElement($season);
+            // set the owning side to null (unless already changed)
+            if ($season->getShow() === $this) {
+                $season->setShow(null);
+            }
+        }
 
         return $this;
     }

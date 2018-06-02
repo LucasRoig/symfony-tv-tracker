@@ -50,34 +50,37 @@ class ShowRepository extends ServiceEntityRepository
             ->setPosterPath($show['poster_path'])
             ->setTmdbId($show['id']);
         $this->getEntityManager()->persist($newShow);
-        $this->getEntityManager()->flush();
         foreach ($show['seasons'] as $season){
-            $this->fetchSeasonFromApi($tmdbId,$season['season_number']);
+            if ($season['season_number'] > 0){
+                $this->fetchSeasonFromApi($newShow,$season['season_number']);
+            }
         }
+        $this->getEntityManager()->flush();
+        $this->getEntityManager()->refresh($newShow);
         return $newShow;
     }
 
     /**
-     * @param $tmdbShowId
+     * @param $show \App\Entity\Show
      * @param $seasonNumber
      * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function fetchSeasonFromApi($tmdbShowId,$seasonNumber){
+    private function fetchSeasonFromApi($show,$seasonNumber){
         $oldSeason = $this->seasonRepository->findOneBy([
-            'tmdb_show_id' => $tmdbShowId,
+            'tmdb_show_id' => $show->getTmdbId(),
             'season_number' => $seasonNumber
         ]);
-        $season = $this->tmdbRepository->getSeason($tmdbShowId,$seasonNumber);
+        $season = $this->tmdbRepository->getSeason($show->getTmdbId(),$seasonNumber);
         $newSeason = isset($oldSeason)? $oldSeason : new Season();
         $newSeason->setName($season['name'])
             ->setPosterPath($season['poster_path'])
             ->setOverview($season['overview'])
             ->setAirDate(new \DateTime($season['air_date']))
             ->setSeasonNumber($season['season_number'])
-            ->setTmdbShowId($tmdbShowId);
+            ->setTmdbShowId($show->getTmdbId())
+            ->setEpisodeCount(count($season['episodes']))
+            ->setShow($show);
         $this->getEntityManager()->persist($newSeason);
-        $this->getEntityManager()->flush();
     }
 
 //    /**

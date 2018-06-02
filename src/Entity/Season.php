@@ -46,6 +46,17 @@ class Season
      */
     private $season_number;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Show", inversedBy="seasons")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $show_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $episode_count;
+
     public function getId()
     {
         return $this->id;
@@ -119,6 +130,30 @@ class Season
     public function setSeasonNumber(int $season_number): self
     {
         $this->season_number = $season_number;
+
+        return $this;
+    }
+
+    public function getShow(): ?Show
+    {
+        return $this->show_id;
+    }
+
+    public function setShow(?Show $show_id): self
+    {
+        $this->show_id = $show_id;
+
+        return $this;
+    }
+
+    public function getEpisodeCount(): ?int
+    {
+        return $this->episode_count;
+    }
+
+    public function setEpisodeCount(int $episode_count): self
+    {
+        $this->episode_count = $episode_count;
 
         return $this;
     }

@@ -15,6 +15,7 @@ class Factories {
             'overview' => 'blilbu',
             'seasons' => [
                 ['season_number' => 1],
+                ['season_number' => 0]
             ]
         ];
     }
@@ -25,7 +26,8 @@ class Factories {
             'name' => 'season 1',
             'overview' => 'Une nouvelle saison',
             'poster_path' => 'sdfgsdfgsfdfg',
-            'season_number' => 1
+            'season_number' => 1,
+            'episodes' => [],
         ];
     }
 }

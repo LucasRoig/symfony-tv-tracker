@@ -41,30 +41,30 @@
                 {{ show.overview }}
             </div>
             <div id="seasons" class="col s12">
-                {#{% for season in show.seasons %}#}
-                {#<div class="season card horizontal">#}
-                    {#<div class="card-image">#}
-                        {#<img src="{{ 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' ~ season.poster_path}}"#}
-                             {#alt="">#}
-                    {#</div>#}
-                    {#<div class="card-stacked">#}
-                        {#<div class="card-content">#}
-                            {#<h1>#}
-                                {#<a href="{{ path('season_show',{showId: show.id, seasonNumber: season.season_number}) }}">Saison {{ season.season_number }}</a>#}
-                            {#</h1>#}
-                            {#<h2>#}
-                                {#{{ season.air_date | slice(0,4) }} | {{ season.episode_count }} épisodes#}
-                            {#</h2>#}
-                            {#<h2>#}
-                                {#0 épisodes à voir#}
-                            {#</h2>#}
-                        {#</div>#}
-                        {#<div class="card-action button">#}
-                            {#<i class="material-icons">done_all</i>Marquer comme vu#}
-                        {#</div>#}
-                    {#</div>#}
-                {#</div>#}
-                {#{% endfor %}#}
+                {% for season in show.seasons %}
+                <div class="season card horizontal">
+                    <div class="card-image">
+                        <img src="{{ 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' ~ season.posterPath}}"
+                             alt="">
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <h1>
+                                <a href="{{ path('season_show',{showId: show.tmdbId, seasonNumber: season.seasonNumber}) }}">Saison {{ season.seasonNumber }}</a>
+                            </h1>
+                            <h2>
+                                {{ season.airDate | date('Y') }} | {{ season.episodeCount }} épisodes
+                            </h2>
+                            <h2>
+                                0 épisodes à voir
+                            </h2>
+                        </div>
+                        <div class="card-action button">
+                            <i class="material-icons">done_all</i>Marquer comme vu
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
 
             </div>
 
