@@ -69,50 +69,15 @@
             </div>
 
             <div id="planning" class="planning">
+                {#{{ dump(show.getUnairedEpisodes()) }}#}
+                {% for episode in show.getUnairedEpisodes() %}
                 <div class="episode">
                     <h1>
-                        <a href="{{ path('episode_show',{showId:1,seasonNumber:2,episodeNumber:1}) }}">S02x01 Episode
-                            1</a>
+                        <a href="{{ path('episode_show',{showId:show.tmdbId,seasonNumber:episode.seasonNumber,episodeNumber:episode.EpisodeNumber}) }}">{{ episode.seasonNumber }}x{{ episode.episodeNumber }} {{ episode.name }}</a>
                     </h1>
-                    <h2>2 juin 2018</h2>
+                    <h2>{{ episode.airDate | date_diff}}</h2>
                 </div>
-                <div class="episode">
-                    <h1>
-                        <a href="{{ path('episode_show',{showId:1,seasonNumber:2,episodeNumber:1}) }}">S02x01 Episode
-                            1</a>
-                    </h1>
-                    <h2>2 juin 2018</h2>
-                </div>
-                <div class="episode">
-                    <h1>
-                        <a href="{{ path('episode_show',{showId:1,seasonNumber:2,episodeNumber:1}) }}">S02x01 Episode
-                            1</a>
-                    </h1>
-                    <h2>2 juin 2018</h2>
-                </div>
-
-                <div class="episode">
-                    <h1>
-                        <a href="{{ path('episode_show',{showId:1,seasonNumber:2,episodeNumber:1}) }}">S02x01 Episode
-                            1</a>
-                    </h1>
-                    <h2>2 juin 2018</h2>
-                </div>
-
-                <div class="episode">
-                    <h1>
-                        <a href="{{ path('episode_show',{showId:1,seasonNumber:2,episodeNumber:1}) }}">S02x01 Episode
-                            1</a>
-                    </h1>
-                    <h2>2 juin 2018</h2>
-                </div>
-                <div class="episode">
-                    <h1>
-                        <a href="{{ path('episode_show',{showId:1,seasonNumber:2,episodeNumber:1}) }}">S02x01 Episode
-                            1</a>
-                    </h1>
-                    <h2>2 juin 2018</h2>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>

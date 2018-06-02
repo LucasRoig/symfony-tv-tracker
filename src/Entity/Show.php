@@ -232,4 +232,12 @@ class Show
         }
         return null;
     }
+
+    public function getUnairedEpisodes(){
+        $yesterday = new \DateTime();
+        $yesterday->add(\DateInterval::createFromDateString('yesterday'));
+        return $this->episodes->filter(function (Episode $e) use ($yesterday){
+            return $e->getAirDate() > $yesterday;
+        });
+    }
 }
