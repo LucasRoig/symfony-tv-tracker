@@ -66,6 +66,10 @@ a{
     margin-right: 5px;
 }
 
+.action-bar .action.active{
+    color: limegreen;
+}
+
 nav{
     position: fixed;
     z-index: 997;

@@ -22,7 +22,11 @@
                             <h2>2 épisodes vus sur 76</h2>
                             <h2>Série terminée</h2>
                         </div>
-                        <div class="card-action button danger">
+                        <div class="card-action button danger" onclick="$('#delete_form_{{ show.tmdbId }}').submit()">
+                            <form id="delete_form_{{ show.tmdbId }}" action="{{ path('watchlist_delete',{tmdbId:show.tmdbId}) }}" method="post">
+                                <input value="DELETE" name="_method" hidden>
+                                <input value="{{ path('watchlist_index') }}" name="redirect" hidden>
+                            </form>
                             <i class="material-icons">delete</i>Supprimer
                         </div>
                     </div>

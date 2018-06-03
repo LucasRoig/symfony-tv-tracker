@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class FunctionalTest extends WebTestCase {
+class FunctionalTestCase extends WebTestCase {
 
     /**
      * @var EntityManagerInterface
@@ -52,17 +52,5 @@ class FunctionalTest extends WebTestCase {
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;
-    }
-
-    /** @test */
-    function test_it_can_login(){
-        $user = $this->createUser();
-        $this->login($user);
-
-        $this->client->request('GET','/watchlist');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-
-        $this->client->request('GET','/watchlist');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 }
