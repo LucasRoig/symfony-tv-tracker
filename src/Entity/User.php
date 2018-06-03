@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -51,6 +53,17 @@ class User implements UserInterface, \Serializable
      * @Assert\Length(max=4096)
      */
     private $plainPassword;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Show")
+     * @ORM\JoinTable(name="user_watchlist")
+     */
+    private $watchlist;
+
+    public function __construct()
+    {
+        $this->watchlist = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -160,5 +173,31 @@ class User implements UserInterface, \Serializable
      */
     public function eraseCredentials () {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Show[]
+     */
+    public function getWatchlist(): Collection
+    {
+        return $this->watchlist;
+    }
+
+    public function addWatchlist(Show $watchlist): self
+    {
+        if (!$this->watchlist->contains($watchlist)) {
+            $this->watchlist[] = $watchlist;
+        }
+
+        return $this;
+    }
+
+    public function removeWatchlist(Show $watchlist): self
+    {
+        if ($this->watchlist->contains($watchlist)) {
+            $this->watchlist->removeElement($watchlist);
+        }
+
+        return $this;
     }
 }

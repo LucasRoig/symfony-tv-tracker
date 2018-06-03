@@ -3,6 +3,8 @@
 namespace App\Tests;
 
 
+use App\Entity\Show;
+
 class Factories {
     public static function getTmdbShow(){
         return [
@@ -49,5 +51,19 @@ class Factories {
         $mock->method('getSeason')->willReturn(Factories::getTmdbSeason());
         $mock->method('getEpisode')->willReturn(Factories::getTmdbEpisode());
         return $mock;
+    }
+
+    public static function storeShow($entityManager){
+        $s = new Show();
+        $s->setOverview('bliblu')
+            ->setName('bliblu')
+            ->setPosterPath('sdfsdfdsf')
+            ->setTmdbId(1)
+            ->setFirstAirDate(new \DateTime())
+            ->setBackdropPath('erererer')
+            ->setStatus('Ended');
+        $entityManager->persist($s);
+        $entityManager->flush();
+        return $s;
     }
 }

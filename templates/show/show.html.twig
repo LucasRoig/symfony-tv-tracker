@@ -17,7 +17,8 @@
     <div class="action">
         <i class="material-icons">done_all</i>Marquer comme vu
     </div>
-    <div class="action">
+    <div class="action" onclick="$('#form_watchlist').submit()">
+        <form id="form_watchlist" action="{{ path('watchlist_store',{tmdbId:show.tmdbId}) }}" method="post"></form>
         <i class="material-icons">list</i>A voir
     </div>
 {% endblock %}
