@@ -60,9 +60,16 @@ class User implements UserInterface, \Serializable
      */
     private $watchlist;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Show")
+     * @ORM\JoinTable(name="user_followlist")
+     */
+    private $follow_list;
+
     public function __construct()
     {
         $this->watchlist = new ArrayCollection();
+        $this->follow_list = new ArrayCollection();
     }
 
     public function getId()
@@ -196,6 +203,32 @@ class User implements UserInterface, \Serializable
     {
         if ($this->watchlist->contains($watchlist)) {
             $this->watchlist->removeElement($watchlist);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Show[]
+     */
+    public function getFollowList(): Collection
+    {
+        return $this->follow_list;
+    }
+
+    public function addToFollowList(Show $followList): self
+    {
+        if (!$this->follow_list->contains($followList)) {
+            $this->follow_list[] = $followList;
+        }
+
+        return $this;
+    }
+
+    public function removeFromFollowList(Show $followList): self
+    {
+        if ($this->follow_list->contains($followList)) {
+            $this->follow_list->removeElement($followList);
         }
 
         return $this;

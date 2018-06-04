@@ -19,18 +19,27 @@ class ShowController extends Controller
     {
         $user = new User();
         $show = $mediaRepository->getShowByTmdbId($showId);
+
         $isInWatchlist = false;
+        $isInFollowList = false;
         if($authChecker->isGranted('ROLE_USER')){
-            foreach ($this->getUser()->getWatchlist()->getValues() as $show){
-                if ($show->getTmdbId() == $showId){
+            foreach ($this->getUser()->getWatchlist() as $s){
+                if ($s->getTmdbId() == $showId){
                     $isInWatchlist = true;
+                    break;
+                }
+            }
+            foreach ($this->getUser()->getFollowlist() as $s){
+                if ($s->getTmdbId() == $showId){
+                    $isInFollowList = true;
                     break;
                 }
             }
         }
         return $this->render('show/show.html.twig', [
             'show'=>$show,
-            'isInWatchlist' => $isInWatchlist
+            'isInWatchlist' => $isInWatchlist,
+            'isInFollowlist' => $isInFollowList
         ]);
     }
 }

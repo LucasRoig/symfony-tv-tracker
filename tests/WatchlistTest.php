@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 
-class WatchlistTestCase extends FunctionalTestCase {
+class WatchlistTest extends FunctionalTestCase {
 
     /** @test */
     function an_authenticated_user_can_add_a_show_to_his_watch_list(){

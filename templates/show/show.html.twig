@@ -11,7 +11,12 @@
 {% endblock %}
 
 {% block media_actions %}
-    <div class="action">
+    <div class="action {{ isInFollowlist ? 'active' : '' }}" onclick="$('#form_followlist').submit()">
+        <form id="form_followlist" action="{{ path('followlist_store',{tmdbId:show.tmdbId}) }}" method="post">
+            {% if isInFollowlist %}
+                <input value="DELETE" name="_method" hidden>
+            {% endif %}
+        </form>
         <i class="material-icons">bookmark_border</i> Suivre
     </div>
     <div class="action">
