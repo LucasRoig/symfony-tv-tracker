@@ -19,8 +19,17 @@
                 <i class="material-icons">chevron_left</i>
             </a>
         </div>
-        <div class="action">
-            <i class="material-icons">done_all</i>Marquer comme vu
+        <div class="action {{ isInHistory ? 'active' }}" onclick="$('#form_season_history').submit()">
+            <form id="form_season_history" action="{{ path('history_store_season',{tmdbId:season.show.tmdbId,seasonNumber:season.seasonNumber}) }}" method="post">
+                {% if isInHistory %}
+                    <input name="_method" value="delete" hidden>
+                {% endif %}
+            </form>
+            {% if isInHistory %}
+                <i class="material-icons">clear</i>Marquer comme non vu
+            {% else %}
+                <i class="material-icons">done_all</i>Marquer comme vu
+            {% endif %}
         </div>
         <div class="action {{ season.hasNextSeason() ? '' : 'hidden' }}">
             <a href="{{ season.hasNextSeason() ? path('season_show',{showId:season.show.tmdbId,seasonNumber:season.seasonNumber + 1}) : '#' }}">
@@ -46,6 +55,7 @@
                 </div>
                 <div id="episodes" class="col s12 episodes">
                     {% for episode in season.episodes %}
+                        {% set isEpWatched = app.user ? app.user.isEpisodeWatched(episode): false %}
                         <div class="episode">
                             <div>
                                 <h1>
@@ -54,9 +64,16 @@
                                 </h1>
                                 <h2>{{ episode.airDate | date('d-m-Y') }}</h2>
                             </div>
-                            <button class="btn waves-effect waves-light green">
-                                <i class="material-icons">check</i>
-                            </button>
+                            <form action="{{ path('history_store_episode',{tmdbId: episode.tvShow.id, seasonNumber: season.seasonNumber, episodeNumber:episode.episodeNumber}) }}" method="post">
+                                {% if isEpWatched %}
+                                    <input name="_method" value="delete" hidden>
+                                {% endif %}
+                                <input name="redirect" value="{{ path('season_show',{showId: season.show.tmdbId, seasonNumber: season.seasonNumber}) }}" hidden>
+                                <button type="submit" class="btn waves-effect waves-light {{ isEpWatched ? 'red' : 'green' }}">
+                                    <i class="material-icons">{{ isEpWatched ? 'clear' : 'check' }}</i>
+                                </button>
+                            </form>
+
                         </div>
                     {% else %}
                         Aucun épisode pour l'instant.

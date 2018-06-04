@@ -3,6 +3,8 @@
 namespace App\Tests;
 
 
+use App\Entity\Episode;
+use App\Entity\Season;
 use App\Entity\Show;
 
 class Factories {
@@ -65,5 +67,39 @@ class Factories {
         $entityManager->persist($s);
         $entityManager->flush();
         return $s;
+    }
+
+    public static function storeSeason($entityManager){
+        $show = static::storeShow($entityManager);
+        $season = new Season();
+        $season->setPosterPath('bliblu')
+            ->setName('Season 1')
+            ->setOverview('Une saison')
+            ->setAirDate(new \DateTime())
+            ->setSeasonNumber(1)
+            ->setEpisodeCount(1)
+            ->setTmdbShowId(1)
+            ->setShow($show);
+        $entityManager->persist($season);
+        $entityManager->flush();
+        $entityManager->refresh($show);
+        return $season;
+    }
+
+    public static function storeEpisode($entityManager){
+        $season = static::storeSeason($entityManager);
+        $episode = new Episode();
+        $episode->setSeasonNumber(1)
+            ->setSeason($season)
+            ->setAirDate(new \DateTime())
+            ->setOverview('Un episode')
+            ->setName('Episode 1')
+            ->setTvShow($season->getShow())
+            ->setStillPath('bliblu')
+            ->setEpisodeNumber(1);
+        $entityManager->persist($episode);
+        $entityManager->flush();
+        $entityManager->refresh($season);
+        return $episode;
     }
 }

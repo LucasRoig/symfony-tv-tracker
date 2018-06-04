@@ -19,8 +19,13 @@
         </form>
         <i class="material-icons">bookmark_border</i> Suivre
     </div>
-    <div class="action">
-        <i class="material-icons">done_all</i>Marquer comme vu
+    <div class="action {{ isInHistory ? 'active' : '' }}" onclick="$('#show_history_form').submit()">
+        <form id="show_history_form" action="{{ path("history_store_show", {tmdbId:show.tmdbId}) }}" method="post">
+            {% if isInHistory %}
+                <input value="DELETE" name="_method" hidden>
+            {% endif %}
+        </form>
+        <i class="material-icons">{{ isInHistory ? 'clear' : 'done_all' }}</i>Marquer comme {{ isInHistory ? 'non ' }}vu
     </div>
     <div class="action {{ isInWatchlist ? 'active' : '' }}" onclick="$('#form_watchlist').submit()">
         <form id="form_watchlist" action="{{ isInWatchlist ? path('watchlist_delete',{tmdbId:show.tmdbId}) : path('watchlist_store',{tmdbId:show.tmdbId}) }}" method="post">
@@ -53,6 +58,8 @@
             </div>
             <div id="seasons" class="col s12">
                 {% for season in show.seasons %}
+
+                    {% set unwatchedEpisodesCount =  app.user ? season.episodes.count() - app.user.getWatchedEpisodeCountForSeason(show.tmdbId,season.seasonNumber) : season.episodes.count()%}
                 <div class="season card horizontal">
                     <div class="card-image">
                         <img src="{{ 'https://image.tmdb.org/t/p/w94_and_h141_bestv2' ~ season.posterPath}}"
@@ -67,11 +74,21 @@
                                 {{ season.airDate | date('Y') }} | {{ season.episodeCount }} épisodes
                             </h2>
                             <h2>
-                                0 épisodes à voir
+                                {{ unwatchedEpisodesCount }} épisodes à voir
                             </h2>
                         </div>
-                        <div class="card-action button">
-                            <i class="material-icons">done_all</i>Marquer comme vu
+                        <div class="card-action button {{ unwatchedEpisodesCount == 0 ? 'danger' }}" onclick="$('#form_watch_season_{{ season.seasonNumber }}').submit()">
+                            <form id="form_watch_season_{{ season.seasonNumber }}" action="{{ path('history_store_season', {tmdbId:show.tmdbId,seasonNumber:season.seasonNumber}) }}" method="post">
+                                {% if  unwatchedEpisodesCount == 0 %}
+                                    <input value="DELETE" name="_method" hidden>
+                                {% endif %}
+                                <input value="{{ path('show_show', {showId:show.tmdbId}) }}" name="redirect" hidden>
+                            </form>
+                            {% if unwatchedEpisodesCount == 0 %}
+                                <i class="material-icons">clear</i>Marquer comme non vu
+                            {% else %}
+                                <i class="material-icons">done_all</i>Marquer comme vu
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -20,8 +20,17 @@
             <i class="material-icons">chevron_left</i>
         </a>
     </div>
-    <div class="action">
-        <i class="material-icons">done_all</i>Marquer comme vu
+    <div class="action {{ isInHistory ? 'active' }}" onclick="$('#history_form').submit()">
+        <form id="history_form" action="{{ path('history_store_episode', {tmdbId: episode.tvShow.id, seasonNumber: episode.seasonNumber, episodeNumber: episode.episodeNumber}) }}" method="post">
+            {% if isInHistory %}
+                <input name="_method" value="delete" hidden>
+            {% endif %}
+        </form>
+        {% if isInHistory %}
+            <i class="material-icons">clear</i>Marquer comme non vu
+        {% else %}
+            <i class="material-icons">done_all</i>Marquer comme vu
+        {% endif %}
     </div>
     <div class="action {{ episode.hasNextEpisode() ? '' : 'hidden' }}">
         <a href="{{ episode.hasNextEpisode() ? path('episode_show', {showId:show.tmdbId,seasonNumber:episode.getNextEpisodeInfo()['seasonNumber'],episodeNumber:episode.getNextEpisodeInfo()['episodeNumber']}) : '#' }}">

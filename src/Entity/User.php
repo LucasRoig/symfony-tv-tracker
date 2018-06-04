@@ -66,10 +66,17 @@ class User implements UserInterface, \Serializable
      */
     private $follow_list;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Episode")
+     * @ORM\JoinTable(name="user_history")
+     */
+    private $history;
+
     public function __construct()
     {
         $this->watchlist = new ArrayCollection();
         $this->follow_list = new ArrayCollection();
+        $this->history = new ArrayCollection();
     }
 
     public function getId()
@@ -232,5 +239,53 @@ class User implements UserInterface, \Serializable
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Episode[]
+     */
+    public function getHistory(): Collection
+    {
+        return $this->history;
+    }
+
+    public function addToHistory(Episode $history): self
+    {
+        if (!$this->history->contains($history)) {
+            $this->history[] = $history;
+        }
+
+        return $this;
+    }
+
+    public function removeFromHistory(Episode $history): self
+    {
+        if ($this->history->contains($history)) {
+            $this->history->removeElement($history);
+        }
+
+        return $this;
+    }
+
+    public function getWatchedEpisodeCountForSeason($tmdbId, $seasonNumber){
+        return $this->getHistory()->filter(function ($e) use ($tmdbId,$seasonNumber){
+            return $e->getTvShow()->getTmdbId() == $tmdbId && $e->getSeasonNumber() == $seasonNumber;
+        })->count();
+    }
+
+    public function countEpisodesWatchedForShow($show){
+        return $this->getHistory()->filter(function ($e) use ($show){
+            return $e->getTvShow()->getId() === $show->getId();
+        })->count();
+    }
+
+    public function isEpisodeWatched($episode){
+        return $this->getHistory()->contains($episode);
+    }
+
+    public function hasCompletedShow($show){
+        return $this->getHistory()->filter(function ($e) use ($show){
+            return $show === $e->getTvShow();
+        })->count() == $show->getEpisodes()->count();
     }
 }

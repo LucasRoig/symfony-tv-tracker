@@ -22,6 +22,7 @@ class ShowController extends Controller
 
         $isInWatchlist = false;
         $isInFollowList = false;
+        $isInHistory = false;
         if($authChecker->isGranted('ROLE_USER')){
             foreach ($this->getUser()->getWatchlist() as $s){
                 if ($s->getTmdbId() == $showId){
@@ -35,11 +36,18 @@ class ShowController extends Controller
                     break;
                 }
             }
+            $historyList = $this->getUser()->getHistory();
+            $historyList = $historyList->filter(function ($e) use ($showId) {
+               return $e->getTvShow()->getTmdbId() == $showId;
+            });
+            $isInHistory = $historyList->count() == $show->getEpisodes()->count();
         }
+
         return $this->render('show/show.html.twig', [
             'show'=>$show,
             'isInWatchlist' => $isInWatchlist,
-            'isInFollowlist' => $isInFollowList
+            'isInFollowlist' => $isInFollowList,
+            'isInHistory' => $isInHistory
         ]);
     }
 }
