@@ -59,6 +59,11 @@
         </ul>
         <div class="container">
             <div id="synopsis" class="col s12">
+                <div class="meta">
+                    <label>DERNIÈRE DIFFUSION </label>{{ show.lastAirDate | date('d F Y') }}
+                    <br>
+                    <label>STATUT</label> {{ show.inProduction ? 'En Production' : 'Terminée' }}
+                </div>
                 {{ show.overview ? show.overview : "Le synopsis n'est pas disponible."}}
             </div>
             <div id="seasons" class="col s12">

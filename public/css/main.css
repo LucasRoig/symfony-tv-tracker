@@ -252,3 +252,7 @@ nav{
     top:inherit;
     left: inherit;
 }
+
+.meta{
+    margin-bottom: 1em;
+}
