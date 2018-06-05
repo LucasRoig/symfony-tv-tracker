@@ -38,7 +38,9 @@ class ShowUpdater {
             ->setStatus($tmdbShow['status'])
             ->setOverview($tmdbShow['overview'])
             ->setPosterPath($tmdbShow['poster_path'])
-            ->setTmdbId($tmdbShow['id']);
+            ->setTmdbId($tmdbShow['id'])
+            ->setInProduction($tmdbShow['in_production'])
+            ->setLastAirDate(new \DateTime($tmdbShow['last_air_date']));
         $this->entityManager->persist($show);
         foreach ($tmdbShow['seasons'] as $season){
             if ($season['season_number'] > 0){

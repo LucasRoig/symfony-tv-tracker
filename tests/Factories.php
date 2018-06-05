@@ -20,7 +20,9 @@ class Factories {
             'seasons' => [
                 ['season_number' => 1],
                 ['season_number' => 0]
-            ]
+            ],
+            'in_production' => 'true',
+            'last_air_date' => '2018-11-4'
         ];
     }
 
@@ -63,7 +65,9 @@ class Factories {
             ->setTmdbId(1)
             ->setFirstAirDate(new \DateTime())
             ->setBackdropPath('erererer')
-            ->setStatus('Ended');
+            ->setStatus('Ended')
+            ->setLastAirDate(new \DateTime())
+            ->setInProduction(true);
         $entityManager->persist($s);
         $entityManager->flush();
         return $s;

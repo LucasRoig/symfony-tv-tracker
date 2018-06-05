@@ -65,6 +65,16 @@ class Show
      */
     private $episodes;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $in_production;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $last_air_date;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
@@ -264,5 +274,29 @@ class Show
         $airDate = Carbon::instance($nextEpisode->getAirDate());
 
         return $airDate->diffInDays(Carbon::now()) < 15;
+    }
+
+    public function getInProduction(): ?bool
+    {
+        return $this->in_production;
+    }
+
+    public function setInProduction(bool $in_production): self
+    {
+        $this->in_production = $in_production;
+
+        return $this;
+    }
+
+    public function getLastAirDate(): ?\DateTimeInterface
+    {
+        return $this->last_air_date;
+    }
+
+    public function setLastAirDate(\DateTimeInterface $last_air_date): self
+    {
+        $this->last_air_date = $last_air_date;
+
+        return $this;
     }
 }
