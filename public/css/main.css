@@ -209,3 +209,40 @@ nav{
 .sidenav li>a{
     color: #fff;
 }
+
+.top-left-corner-label{
+    position: absolute;
+    display: inline-block;
+    top:0;
+    left:0;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    width: 3.5em;
+    height: 3.5em;
+}
+.top-left-corner-label::after{
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 0;
+    z-index: -1;
+    width: 0;
+
+    background-color: transparent!important;
+    border-top: 0 solid transparent;
+    border-right: 0 solid #db2828!important;
+    border-bottom: 3.5em solid transparent;
+    border-left: 3.5em solid #db2828!important;
+}
+.top-left-corner-label>i{
+    right: .4em;
+    position: relative;
+    top: .2em;
+    font-size: 1.7em;
+}
+
+.media-header .top-left-corner-label{
+    top:inherit;
+    left: inherit;
+}

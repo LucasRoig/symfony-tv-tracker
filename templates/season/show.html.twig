@@ -1,6 +1,11 @@
 {% extends 'media.html.twig' %}
 {% block background_url %}{{ season.show.backdropPath }}{% endblock %}
     {% block media_poster %}
+        {% if season.show.isHot() %}
+            <div class="top-left-corner-label">
+                <i class="material-icons">whatshot</i>
+            </div>
+        {% endif%}
         <img src="https://image.tmdb.org/t/p/w92/{{ season.posterPath}}" alt="">
     {% endblock %}
 

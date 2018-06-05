@@ -21,6 +21,11 @@
                 <div class="show card horizontal">
                     <div class="card-image">
                         <a href="{{ path('show_show',{showId:show.tmdbId}) }}">
+                            {% if show.isHot() %}
+                                <div class="top-left-corner-label">
+                                    <i class="material-icons">whatshot</i>
+                                </div>
+                            {% endif%}
                             <img src="https://image.tmdb.org/t/p/w92{{ show.posterPath }}" alt="">
                         </a>
                     </div>
@@ -49,6 +54,11 @@
                 <div class="show card horizontal">
                     <div class="card-image">
                         <a href="{{ path('show_show',{showId:show.tmdbId}) }}">
+                            {% if show.isHot() %}
+                                <div class="top-left-corner-label">
+                                    <i class="material-icons">whatshot</i>
+                                </div>
+                            {% endif%}
                             <img src="https://image.tmdb.org/t/p/w92{{ show.posterPath }}" alt="">
                         </a>
                     </div>

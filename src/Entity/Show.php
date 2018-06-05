@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -239,5 +240,29 @@ class Show
         return $this->episodes->filter(function (Episode $e) use ($yesterday){
             return $e->getAirDate() > $yesterday;
         });
+    }
+
+    public function getNextAiredEpisode(){
+        $unairedEpisodes = $this->getUnairedEpisodes();
+        if ($unairedEpisodes->isEmpty()){
+            return null;
+        }
+
+        $nextEpisode = $unairedEpisodes->first();
+        foreach ($unairedEpisodes as $e){
+            if($nextEpisode->getAirDate() > $e->getAirDate()){
+                $nextEpisode = $e;
+            }
+        }
+
+        return $nextEpisode;
+    }
+
+    public function isHot(){
+        $nextEpisode = $this->getNextAiredEpisode();
+        if ($nextEpisode == null) return false;
+        $airDate = Carbon::instance($nextEpisode->getAirDate());
+
+        return $airDate->diffInDays(Carbon::now()) < 15;
     }
 }
