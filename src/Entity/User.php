@@ -66,17 +66,18 @@ class User implements UserInterface, \Serializable
      */
     private $follow_list;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Episode")
-     * @ORM\JoinTable(name="user_history")
+     * @ORM\OneToMany(targetEntity="App\Entity\EpisodeWatched", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OrderBy({"created_at" = "DESC"})
      */
-    private $history;
+    private $episodeWatchedRelation;
 
     public function __construct()
     {
         $this->watchlist = new ArrayCollection();
         $this->follow_list = new ArrayCollection();
-        $this->history = new ArrayCollection();
+        $this->episodeWatchedRelation = new ArrayCollection();
     }
 
     public function getId()
@@ -246,22 +247,30 @@ class User implements UserInterface, \Serializable
      */
     public function getHistory(): Collection
     {
-        return $this->history;
+        return $this->getEpisodeWatchedRelation()->map(function ($e){
+            return $e->getEpisode();
+        });
     }
 
-    public function addToHistory(Episode $history): self
+    public function addToHistory(Episode $episode): self
     {
-        if (!$this->history->contains($history)) {
-            $this->history[] = $history;
+        if (!$this->getHistory()->contains($episode)) {
+            $e = new EpisodeWatched();
+            $e->setUser($this)
+                ->setEpisode($episode)
+                ->setCreatedAt(new \DateTime());
+            $this->episodeWatchedRelation->add($e);
         }
 
         return $this;
     }
 
-    public function removeFromHistory(Episode $history): self
+    public function removeFromHistory(Episode $episode): self
     {
-        if ($this->history->contains($history)) {
-            $this->history->removeElement($history);
+        foreach ($this->episodeWatchedRelation as $e){
+            if($e->getUser() === $this && $e->getEpisode() === $episode){
+                $this->episodeWatchedRelation->removeElement($e);
+            }
         }
 
         return $this;
@@ -287,5 +296,13 @@ class User implements UserInterface, \Serializable
         return $this->getHistory()->filter(function ($e) use ($show){
             return $show === $e->getTvShow();
         })->count() == $show->getEpisodes()->count();
+    }
+
+    /**
+     * @return Collection|EpisodeWatched[]
+     */
+    private function getEpisodeWatchedRelation(): Collection
+    {
+        return $this->episodeWatchedRelation;
     }
 }

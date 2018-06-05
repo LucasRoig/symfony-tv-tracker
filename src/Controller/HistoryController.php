@@ -29,6 +29,7 @@ class HistoryController extends Controller
         foreach ($shows as $show){
             $showsUnique[$show->getId()] = $show;
         }
+
         $shows = array_values($showsUnique);
 
         $completedShows = array();
