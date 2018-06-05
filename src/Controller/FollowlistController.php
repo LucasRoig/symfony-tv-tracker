@@ -19,11 +19,29 @@ class FollowlistController extends Controller
     public function index(MediaRepository $mediaRepository)
     {
         $shows = $this->getUser()->getFollowList();
+
         $shows->map(function ($s) use ($mediaRepository){
             return $mediaRepository->getShowByTmdbId($s->getTmdbId());
         });
+        $iterator = $shows->getIterator();
+        $iterator->uasort(function ($first, $second){
+            if ($first->isHot() && $second->isHot()){
+                return $first->getNextAiredEpisode()->getAirDate() > $second->getNextAiredEpisode()->getAirDate();
+            }
+            if ($first->isHot()) return -1;
+            if ($second->isHot()) return 1;
+
+            if($first->getInProduction() && $second->getInProduction()){
+                return $first->getLastAirDate() < $second->getLastAirDate();
+            }
+            if($first->getInProduction()) return -1;
+            if($second->getInProduction()) return 1;
+
+            return $first->getLastAirDate() < $second->getLastAirDate();
+
+        });
         return $this->render('followlist/index.html.twig', [
-            'shows' => $shows,
+            'shows' => $iterator,
         ]);
     }
 

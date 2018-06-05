@@ -270,7 +270,7 @@ class Show
 
     public function isHot(){
         $nextEpisode = $this->getNextAiredEpisode();
-        if ($nextEpisode == null) return false;
+        if ($nextEpisode === null) return false;
         $airDate = Carbon::instance($nextEpisode->getAirDate());
 
         return $airDate->diffInDays(Carbon::now()) < 15;
