@@ -1,5 +1,5 @@
 {% extends 'media.html.twig' %}
-{% block background_url %}{{ episode.stillPath }}{% endblock %}
+{% block background_url %}{{ episode.stillPath ? episode.stillPath : episode.tvShow.backdropPath }}{% endblock %}
 {% block media_poster %}
     {% if season.show.isHot() %}
         <div class="top-left-corner-label">
@@ -49,7 +49,10 @@
     <section>
         <div class="container">
             <div class="meta">
-                <label>DIFFUSION </label>{{ episode.airDate | date('d-m-Y') }}
+                <label>DIFFUSION </label>{{ episode.airDate | date('d F Y') }}
+                {% if (episode.airDate|date('Y-m-d')) > ('now'|date('Y-m-d')) %}
+                    - <strong>Pas encore diffusé</strong>
+                {% endif %}
             </div>
             <div id="synopsis" class="col s12">
                 {{ episode.overview ? episode.overview : "Le synopsis n'est pas disponible"}}

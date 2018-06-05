@@ -67,7 +67,7 @@
                                     <a href="{{ path('episode_show',{showId:season.show.tmdbId,seasonNumber:season.seasonNumber,episodeNumber:episode.episodeNumber}) }}">{{ season.seasonNumber }}x{{ episode.episodeNumber }} -
                                         {{ episode.name }}</a>
                                 </h1>
-                                <h2>{{ episode.airDate | date('d-m-Y') }}</h2>
+                                <h2>{{ episode.airDate | date('d F Y') }}</h2>
                             </div>
                             <form action="{{ path('history_store_episode',{tmdbId: episode.tvShow.id, seasonNumber: season.seasonNumber, episodeNumber:episode.episodeNumber}) }}" method="post">
                                 {% if isEpWatched %}
