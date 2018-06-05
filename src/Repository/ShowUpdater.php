@@ -34,7 +34,7 @@ class ShowUpdater {
 
     public function updateShow($tmdbId){
         $oldShow = $this->showRepository->findOneBy(['tmdb_id' => $tmdbId]);
-        if($oldShow && $this->env === 'production'){
+        if($oldShow && $this->env === 'prod'){
             $updatedAt = Carbon::instance($oldShow->getUpdatedAt());
             if($updatedAt->diffInHours(Carbon::now()) < 24){
                 return $oldShow;
