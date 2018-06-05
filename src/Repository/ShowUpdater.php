@@ -6,6 +6,7 @@ namespace App\Repository;
 use App\Entity\Episode;
 use App\Entity\Season;
 use App\Entity\Show;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ShowUpdater {
@@ -22,14 +23,23 @@ class ShowUpdater {
      */
     private $showRepository;
 
-    public function __construct (TmdbRepository $tmdbRepository, EntityManagerInterface $entityManager) {
+    private $env;
+
+    public function __construct ($env, TmdbRepository $tmdbRepository, EntityManagerInterface $entityManager) {
         $this->tmdbRepository = $tmdbRepository;
         $this->entityManager = $entityManager;
         $this->showRepository = $this->entityManager->getRepository(Show::class);
+        $this->env = $env;
     }
 
     public function updateShow($tmdbId){
         $oldShow = $this->showRepository->findOneBy(['tmdb_id' => $tmdbId]);
+        if($oldShow && $this->env === 'production'){
+            $updatedAt = Carbon::instance($oldShow->getUpdatedAt());
+            if($updatedAt->diffInHours(Carbon::now()) < 24){
+                return $oldShow;
+            }
+        }
         $tmdbShow = $this->tmdbRepository->getShow($tmdbId);
         $show = isset($oldShow) ? $oldShow : new Show();
         $show->setBackdropPath($tmdbShow['backdrop_path'])
@@ -40,7 +50,8 @@ class ShowUpdater {
             ->setPosterPath($tmdbShow['poster_path'])
             ->setTmdbId($tmdbShow['id'])
             ->setInProduction($tmdbShow['in_production'])
-            ->setLastAirDate(new \DateTime($tmdbShow['last_air_date']));
+            ->setLastAirDate(new \DateTime($tmdbShow['last_air_date']))
+            ->setUpdatedAt();
         $this->entityManager->persist($show);
         foreach ($tmdbShow['seasons'] as $season){
             if ($season['season_number'] > 0){

@@ -75,6 +75,11 @@ class Show
      */
     private $last_air_date;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
+
     public function __construct()
     {
         $this->seasons = new ArrayCollection();
@@ -299,4 +304,23 @@ class Show
 
         return $this;
     }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * @return Show
+     */
+    public function setUpdatedAt(): self
+    {
+        $this->updated_at = new \DateTime();
+
+        return $this;
+    }
+
+
 }
