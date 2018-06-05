@@ -21,11 +21,8 @@
                             <h1>
                                 <a href="{{ path('show_show',{showId:show.id}) }}">{{ show.name }} ({{ show.first_air_date|slice(0,4)}})</a>
                             </h1>
-                            <h2>2 épisodes vus sur 76</h2>
-                            <h2>Série terminée</h2>
+                            <p>{{ show.overview | length > 120 ? show.overview|slice(0,120) ~ '…' : show.overview}}</p>
                         </div>
-                        <div class="card-action button">
-                            <i class="material-icons">done_all</i>Marquer comme vu</div>
                     </div>
                 </div>
                 {% endfor %}
