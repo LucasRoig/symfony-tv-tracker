@@ -18,6 +18,7 @@
 
             <div id="not_completed" class="shows">
                 {% for show in notCompletedShows %}
+                    {% set nextEp = app.user.getNextEpisodeToWatchInShow(show) %}
                 <div class="show card horizontal">
                     <div class="card-image">
                         <a href="{{ path('show_show',{showId:show.tmdbId}) }}">
@@ -34,7 +35,8 @@
                             <h1>
                                 <a href="{{ path('show_show',{showId:show.tmdbId}) }}">{{ show.name }} ({{ show.firstAirDate | date('Y') }})</a>
                             </h1>
-                            <h2>{{ show.episodes.count() - app.user.countEpisodesWatchedForShow(show) }} épisodes restants</h2>
+                            <h3>{{ show.episodes.count() - app.user.countEpisodesWatchedForShow(show) }} épisodes restants</h3>
+                            <h2><a href="{{ path('episode_show',{showId: show.tmdbId, seasonNumber: nextEp.seasonNumber, episodeNumber: nextEp.episodeNumber}) }}">Episode suivant : {{ nextEp.seasonNumber }}x{{ nextEp.episodeNumber }} - {{ nextEp.name }}</a></h2>
                         </div>
                         <div class="card-action button" onclick="$('#form_mark_watched_{{ show.tmdbId }}').submit()">
                             <form id="form_mark_watched_{{ show.tmdbId }}" action="{{ path('history_store_show', {tmdbId: show.tmdbId}) }}" method="post">

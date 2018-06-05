@@ -305,4 +305,22 @@ class User implements UserInterface, \Serializable
     {
         return $this->episodeWatchedRelation;
     }
+
+    /**
+     * @param $show Show
+     * @return Episode
+     */
+    public function getNextEpisodeToWatchInShow($show){
+        $epWatched = $this->getHistory()->filter(function ($e) use ($show){
+            return $e->getTvShow()->getId() === $show->getId();
+        });
+        foreach ($show->getSeasons() as $season){
+            foreach ($season->getEpisodes() as $episode){
+                if (!$epWatched->contains($episode)){
+                    return $episode;
+                }
+            }
+        }
+        return null;
+    }
 }
