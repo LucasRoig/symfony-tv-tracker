@@ -1,5 +1,66 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Hello user</h1>
+    <div class="container dashboard">
+        <div class="airing_soon">
+            <h1>Prochaines diffusions</h1>
+            {% for show in airingSoon %}
+                <div class="show card horizontal">
+                    <div class="card-image">
+                        <a href="{{ path('show_show',{showId:show.tmdbId}) }}">
+                            <div class="top-left-corner-label">
+                                <i class="material-icons">whatshot</i>
+                            </div>
+                            <img src="https://image.tmdb.org/t/p/w92{{ show.posterPath }}" alt="">
+                        </a>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <h1>
+                                <a href="{{ path('show_show',{showId:show.tmdbId}) }}">{{ show.name }} ({{ show.firstAirDate | date('Y') }})</a>
+                            </h1>
+                            {% set nextEp = show.getNextAiredEpisode() %}
+                            <h2>Prochain épisode {{ nextEp.seasonNumber }}x{{ nextEp.episodeNumber }}</h2>
+                            <h2>{{ nextEp.airDate() | date_diff }}</h2>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                Aucune diffusion à venir.
+            {% endfor %}
+        </div>
+        <div class="next_to_watch">
+            <h1>À voir ensuite</h1>
+            {% for show in nextToWatch %}
+                {% set nextEp = app.user.getNextEpisodeToWatchInShow(show) %}
+                <div class="show card horizontal">
+                    <div class="card-image">
+                        <a href="{{ path('show_show',{showId:show.tmdbId}) }}">
+                            <div class="top-left-corner-label">
+                                <i class="material-icons">whatshot</i>
+                            </div>
+                            <img src="https://image.tmdb.org/t/p/w92{{ show.posterPath }}" alt="">
+                        </a>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <h1>
+                                <a href="{{ path('show_show',{showId:show.tmdbId}) }}">{{ show.name }} ({{ show.firstAirDate | date('Y') }})</a>
+                            </h1>
+                            <h3>{{ show.episodes.count() - app.user.countEpisodesWatchedForShow(show) }} épisodes restants</h3>
+                            <h2><a href="{{ path('episode_show',{showId: show.tmdbId, seasonNumber: nextEp.seasonNumber, episodeNumber: nextEp.episodeNumber}) }}">Episode suivant : {{ nextEp.seasonNumber }}x{{ nextEp.episodeNumber }} - {{ nextEp.name }}</a></h2>
+                        </div>
+                        <div class="card-action button" onclick="$('#form_mark_watched_{{ show.tmdbId }}').submit()">
+                            <form id="form_mark_watched_{{ show.tmdbId }}" action="{{ path('history_store_episode', {tmdbId: show.id, seasonNumber:nextEp.seasonNumber, episodeNumber: nextEp.episodeNumber}) }}" method="post">
+                                <input name="redirect" value="{{ path('dashboard_index') }}" hidden>
+                            </form>
+                            <i class="material-icons">done_all</i>Marquer comme vu
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                Aucune série non terminée.
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

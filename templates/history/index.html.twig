@@ -39,7 +39,7 @@
                             <h2><a href="{{ path('episode_show',{showId: show.tmdbId, seasonNumber: nextEp.seasonNumber, episodeNumber: nextEp.episodeNumber}) }}">Episode suivant : {{ nextEp.seasonNumber }}x{{ nextEp.episodeNumber }} - {{ nextEp.name }}</a></h2>
                         </div>
                         <div class="card-action button" onclick="$('#form_mark_watched_{{ show.tmdbId }}').submit()">
-                            <form id="form_mark_watched_{{ show.tmdbId }}" action="{{ path('history_store_show', {tmdbId: show.tmdbId}) }}" method="post">
+                            <form id="form_mark_watched_{{ show.tmdbId }}" action="{{ path('history_store_episode', {tmdbId: show.id, seasonNumber: nextEp.seasonNumber, episodeNumber: nextEp.episodeNumber}) }}" method="post">
                                 <input name="redirect" value="{{ path('history_index') }}" hidden>
                             </form>
                             <i class="material-icons">done_all</i>Marquer comme vu

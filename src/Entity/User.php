@@ -221,7 +221,25 @@ class User implements UserInterface, \Serializable
      */
     public function getFollowList(): Collection
     {
-        return $this->follow_list;
+        $iterator = $this->follow_list->getIterator();
+        $iterator->uasort(function ($first, $second){
+            if ($first->isHot() && $second->isHot()){
+                return $first->getNextAiredEpisode()->getAirDate() > $second->getNextAiredEpisode()->getAirDate();
+            }
+            if ($first->isHot()) return -1;
+            if ($second->isHot()) return 1;
+
+            if($first->getInProduction() && $second->getInProduction()){
+                return $first->getLastAirDate() < $second->getLastAirDate();
+            }
+            if($first->getInProduction()) return -1;
+            if($second->getInProduction()) return 1;
+
+            return $first->getLastAirDate() < $second->getLastAirDate();
+
+        });
+
+        return new ArrayCollection(iterator_to_array($iterator));
     }
 
     public function addToFollowList(Show $followList): self
@@ -311,11 +329,15 @@ class User implements UserInterface, \Serializable
      * @return Episode
      */
     public function getNextEpisodeToWatchInShow($show){
+
         $epWatched = $this->getHistory()->filter(function ($e) use ($show){
             return $e->getTvShow()->getId() === $show->getId();
         });
+
         foreach ($show->getSeasons() as $season){
+
             foreach ($season->getEpisodes() as $episode){
+
                 if (!$epWatched->contains($episode)){
                     return $episode;
                 }
