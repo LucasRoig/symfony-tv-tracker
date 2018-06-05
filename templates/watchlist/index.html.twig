@@ -24,8 +24,8 @@
                             <h1>
                                 <a href="{{ path('show_show',{showId:show.tmdbId}) }}">{{ show.name }} ({{ show.firstAirDate | date('Y') }})</a>
                             </h1>
-                            <h2>2 épisodes vus sur 76</h2>
-                            <h2>Série terminée</h2>
+                            <h2>{{ show.episodes.count() }} épisodes</h2>
+                            <h2>{{ show.status }}</h2>
                         </div>
                         <div class="card-action button danger" onclick="$('#delete_form_{{ show.tmdbId }}').submit()">
                             <form id="delete_form_{{ show.tmdbId }}" action="{{ path('watchlist_delete',{tmdbId:show.tmdbId}) }}" method="post">
